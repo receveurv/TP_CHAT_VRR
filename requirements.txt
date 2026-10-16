@@ -1,0 +1,6 @@
+openai>=1.60
+python-dotenv>=1.0
+mysql-connector-python>=9.0
+flask>=3.0
+semantic-kernel>=1.30
+pytest>=8.0
