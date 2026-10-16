@@ -6,7 +6,7 @@ import mysql.connector
 import pytest
 from semantic_kernel import Kernel
 
-from src.agent import SQLPlugin
+from src.plugins.sql_plugin import SQLPlugin
 
 
 @pytest.fixture
@@ -16,7 +16,7 @@ def base_simulee(monkeypatch):
     curseur = connexion.cursor.return_value.__enter__.return_value
     curseur.fetchall.return_value = []
     connecter = MagicMock(return_value=connexion)
-    monkeypatch.setattr("src.agent.mysql.connector.connect", connecter)
+    monkeypatch.setattr("src.plugins.sql_plugin.mysql.connector.connect", connecter)
     return SQLPlugin(), connexion, curseur, connecter
 
 
@@ -72,7 +72,7 @@ def test_reessaie_la_connexion_apres_un_echec(base_simulee, monkeypatch):
     plugin, connexion, _, connecter = base_simulee
     connecter.side_effect = [mysql.connector.Error("Erreur temporaire"), connexion]
     attendre = MagicMock()
-    monkeypatch.setattr("src.agent.time.sleep", attendre)
+    monkeypatch.setattr("src.plugins.sql_plugin.time.sleep", attendre)
 
     assert json.loads(plugin.rupture_de_stock()) == []
 
@@ -84,7 +84,7 @@ def test_arrete_apres_trois_retry(base_simulee, monkeypatch):
     plugin, _, _, connecter = base_simulee
     connecter.side_effect = mysql.connector.Error("Erreur persistante")
     attendre = MagicMock()
-    monkeypatch.setattr("src.agent.time.sleep", attendre)
+    monkeypatch.setattr("src.plugins.sql_plugin.time.sleep", attendre)
 
     with pytest.raises(mysql.connector.Error, match="Erreur persistante"):
         plugin.rupture_de_stock()

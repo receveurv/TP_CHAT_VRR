@@ -11,6 +11,7 @@ from src.agent import SPEC_EXEMPLE, main
 @pytest.fixture
 def agent_simule(monkeypatch):
     monkeypatch.setitem(sys.modules, "config", SimpleNamespace(creer_kernel=MagicMock()))
+    monkeypatch.setitem(sys.modules, "plugins.rag_plugin", SimpleNamespace(RAGPlugin=MagicMock()))
     monkeypatch.setattr("src.agent.SQLPlugin", MagicMock())
     agent = MagicMock()
     agent.get_response = AsyncMock()

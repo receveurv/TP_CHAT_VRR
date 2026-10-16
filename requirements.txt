@@ -3,4 +3,5 @@ python-dotenv>=1.0
 mysql-connector-python>=9.0
 flask>=3.0
 semantic-kernel>=1.30
+pypdf>=4.0
 pytest>=8.0
