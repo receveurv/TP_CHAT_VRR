@@ -1,4 +1,9 @@
 .venv*
 .env
-sql*
+sql
+sql/*.sql
 Cahier*
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
